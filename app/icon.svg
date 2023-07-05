@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="125.5" height="60" viewBox="0 0 125.5 60">
+<style>
+circle, path {
+    fill: black;
+}
+@media (prefers-color-scheme: dark) {
+    circle, path {
+    fill: white;
+  }
+}
+</style>
+<circle cx="30" cy="30" r="30"/><path d="M124.5 21.5H105V2c0-.6-.4-1-1-1H89c-.6 0-1 .4-1 1v19.5H68.5c-.6 0-1 .4-1 1v15c0 .6.4 1 1 1H88V58c0 .6.4 1 1 1h15c.6 0 1-.4 1-1V38.5h19.5c.6 0 1-.4 1-1v-15c0-.6-.4-1-1-1z"/></svg>
