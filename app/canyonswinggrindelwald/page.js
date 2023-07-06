@@ -15,13 +15,11 @@ const availabilitiesData = await fetchAvailability(activityId, token);
 export default async function Page() {
   return (
     <div className="m-10">
-      <HeaderBar title="CANYON SWING (w/transport)" />
+      <HeaderBar title="CANYON SWING (meet @ the Glacier Canyon)" />
       <Availabilities
         data={availabilitiesData}
-        titleMatch="Single Seat with Transport"
+        titleMatch="Single Seat - Meeting Point Glacier Canyon"
       />
     </div>
   );
 }
-
-// Single Seat - Meeting Point Glacier Canyon
