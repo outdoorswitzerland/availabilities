@@ -15,7 +15,7 @@ const availabilitiesData = await fetchAvailability(activityId, token);
 export default async function Page() {
   return (
     <div className="m-10">
-      <HeaderBar title="CANYON SWING (meet @ the Glacier Canyon)" />
+      <HeaderBar title="CANYON SWING" subTitle="(meet @ the Glacier Canyon)" />
       <Availabilities
         data={availabilitiesData}
         titleMatch="Single Seat - Meeting Point Glacier Canyon"

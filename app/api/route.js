@@ -22,7 +22,7 @@ export async function refreshAccessToken() {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: `grant_type=${grantType}&client_id=${clientId}&client_secret=${clientSecret}`,
-    next: { revalidate: 60 * 55 }, // Revalidate every 60 seconds
+    next: { revalidate: 60 * 55 }, // Revalidate every 55 minutes
   });
 
   if (!res.ok) {

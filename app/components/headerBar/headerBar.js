@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export const HeaderBar = ({ title }) => {
+export const HeaderBar = ({ subTitle, title }) => {
   const [todaysDate, setTodaysDate] = useState("");
 
   useEffect(() => {
@@ -22,7 +22,10 @@ export const HeaderBar = ({ title }) => {
 
   return (
     <div className="grid grid-cols-2 bg-primary text-white text-2xl rounded-md p-4 mb-4">
-      <div>{title}</div>
+      <div>
+        <div>{title}</div>
+        <div className="text-lg">{subTitle}</div>
+      </div>
       <div className="text-right">{todaysDate}</div>
     </div>
   );
