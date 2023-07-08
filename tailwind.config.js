@@ -24,7 +24,7 @@ module.exports = {
         ogray90: "#27272A",
       },
       fontFamily: {
-        sans: ["futuraRound", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--futuraRound)", ...defaultTheme.fontFamily.sans],
       },
       container: {
         center: true,

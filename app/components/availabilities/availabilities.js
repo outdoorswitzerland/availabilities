@@ -33,8 +33,8 @@ export const Availabilities = ({ data, titleMatch }) => {
 
       if (
         !acc.some((item) => item.availabilityItemId === availabilityItemId) &&
-        (!titleMatch || categories[0].name === titleMatch)
-        // && new Date(dateString) > currentTime
+        (!titleMatch || categories[0].name === titleMatch) &&
+        new Date(dateString) > currentTime
       ) {
         acc.push({
           availabilityItemId,
@@ -53,7 +53,8 @@ export const Availabilities = ({ data, titleMatch }) => {
       >
         <div>{item.formattedTime}</div>
         <div className="text-right">
-          <strong>{item.availableSeats}</strong> seats available
+          <strong>{item.availableSeats}</strong> seat
+          {item.availableSeats === 1 ? "" : "s"} available
         </div>
       </div>
     ));

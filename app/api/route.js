@@ -57,6 +57,7 @@ export async function fetchAvailability(activityId, token) {
 export async function fetchAvailabilityWithRefreshedToken(activityId) {
   const tokenData = await refreshAccessToken();
   const token = tokenData?.access_token;
+  console.log(tokenData);
   const availabilitiesData = await fetchAvailability(activityId, token);
   return availabilitiesData;
 }
