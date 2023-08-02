@@ -2,8 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 
-export const Availabilities = ({ data, titleMatch }) => {
+export const Availabilities = ({ data, titleMatch, isLoading }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -13,7 +18,12 @@ export const Availabilities = ({ data, titleMatch }) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [data]);
+
+  // If data is still loading, show a loading message
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const availabilities = data
     ?.reduce((acc, d) => {
@@ -51,7 +61,7 @@ export const Availabilities = ({ data, titleMatch }) => {
         key={item.availabilityItemId}
         className="grid grid-cols-2 gap-4 mb-4 p-4 text-2xl rounded-md shadow border border-gray-200"
       >
-        <div>{item.formattedTime}</div>
+        {isHydrated && <div>{item.formattedTime}</div>}
         <div className="text-right">
           <strong>{item.availableSeats}</strong> seat
           {item.availableSeats === 1 ? "" : "s"} available
