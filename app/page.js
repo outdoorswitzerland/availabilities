@@ -8,7 +8,7 @@ export default function Home() {
       <div className="">Displays current day availabilities.</div>
       <div className="flex flex-wrap gap-4 my-10">
         <Link href="/jetboat">
-          <Button>Jetboat</Button>
+          <Button jetboat>Jetboat</Button>
         </Link>
         <Link href="/canyonswinginterlaken">
           <Button>Canyon Swing (Interlaken)</Button>

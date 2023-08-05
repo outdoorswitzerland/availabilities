@@ -1,6 +1,10 @@
-export const Button = ({ children }) => {
+export const Button = ({ children, jetboat }) => {
   return (
-    <button className="bg-primary px-4 py-2 rounded-lg text-white">
+    <button
+      className={`${
+        jetboat ? "bg-oRed" : "bg-primary"
+      } px-4 py-2 rounded-lg text-white`}
+    >
       {children}
     </button>
   );

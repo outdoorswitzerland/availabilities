@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/formatDate";
+
 // api details
 const trekksoftApiBaseUrl = "https://api2.trekksoft.com";
 
@@ -31,14 +33,12 @@ export async function refreshAccessToken() {
 }
 
 // fetch availability data
-export async function fetchAvailability(activityId, token) {
-  // format date for api request parameter
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = ("0" + (now.getMonth() + 1)).slice(-2);
-  const day = ("0" + now.getDate()).slice(-2);
-  const formattedDate = year + "-" + month + "-" + day;
+export async function fetchAvailability(activityId, token, selectedDate) {
+  console.log("Selected date in fetchAvailability:", selectedDate);
 
+  const formattedDate = formatDate(new Date(selectedDate));
+
+  // const apiParams = `?activeOnly=false&startsFrom=2023-08-03&startsTo=2023-08-03`;
   const apiParams = `?activeOnly=false&startsFrom=${formattedDate}&startsTo=${formattedDate}`;
   const urlAvailabilities = `${trekksoftApiBaseUrl}/activities/${activityId}/availabilities${apiParams}`;
   const headers = {
@@ -63,16 +63,26 @@ export async function fetchAvailability(activityId, token) {
   }
 }
 
-export async function fetchAvailabilityWithRefreshedToken(activityId) {
+export async function fetchAvailabilityWithRefreshedToken(
+  activityId,
+  selectedDate
+) {
+  console.log(
+    "Selected date in fetchAvailabilityWithRefreshedToken:",
+    selectedDate
+  );
   const tokenData = await refreshAccessToken();
 
   if (!tokenData) {
-    // If refreshing the token failed, return null
     return null;
   }
 
   const token = tokenData?.access_token;
-  const availabilitiesData = await fetchAvailability(activityId, token);
+  const availabilitiesData = await fetchAvailability(
+    activityId,
+    token,
+    selectedDate
+  );
 
   return availabilitiesData;
 }
