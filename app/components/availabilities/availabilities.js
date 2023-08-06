@@ -75,7 +75,7 @@ export const Availabilities = ({
         {isHydrated && <div>{item.formattedTime}</div>}
         <div className="text-right">
           <strong>{item.availableSeats}</strong> seat
-          {item.availableSeats === 1 ? "" : "s"} available
+          {item.availableSeats === 1 ? "" : "s"}
         </div>
       </div>
     ));

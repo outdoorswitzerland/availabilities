@@ -28,6 +28,14 @@ export default function ClientComponent({
     }
 
     fetchData();
+
+    const interval = setInterval(() => {
+      fetchData(); // Fetch new data every minute
+    }, 60000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [selectedDate, activityId]);
 
   if (isLoading) {
