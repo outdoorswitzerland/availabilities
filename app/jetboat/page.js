@@ -1,20 +1,19 @@
 import React from "react";
-import ClientComponent from "../components/clientComponent.js";
+import { DateProvider } from "../context/dateContext";
+import HeaderBar from "../components/headerBar/headerBar";
+import Availabilities from "../components/availabilities/availabilities";
 
 export const metadata = {
   title: "Jetboat",
 };
 
 export default function Page() {
-  const activityId = "305721";
-
   return (
-    <div className="m-10">
-      <ClientComponent
-        activityId={activityId}
-        title="JETBOAT departure times"
-        jetboat
-      />
-    </div>
+    <DateProvider>
+      <div className="m-10">
+        <HeaderBar title="JETBOAT departure times" jetboat />
+        <Availabilities activityId="305721" />
+      </div>
+    </DateProvider>
   );
 }

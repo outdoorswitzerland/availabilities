@@ -37,7 +37,6 @@ export default function CustomDatePicker({ setSelectedDate }) {
   });
 
   useEffect(() => {
-    console.log("Selected date in DatePicker:", localSelectedDate);
     setSelectedDate(localSelectedDate);
   }, [localSelectedDate, setSelectedDate]);
 

@@ -1,8 +1,11 @@
 "use client";
 
+import { useDate } from "../../context/dateContext";
 import DatePicker from "../datePicker/datePicker";
 
-export const HeaderBar = ({ title, jetboat, setSelectedDate, subTitle }) => {
+const HeaderBar = ({ title, jetboat, subTitle }) => {
+  const { selectedDate, setSelectedDate } = useDate();
+
   return (
     <div
       className={`grid grid-cols-2 items-center ${
@@ -17,3 +20,5 @@ export const HeaderBar = ({ title, jetboat, setSelectedDate, subTitle }) => {
     </div>
   );
 };
+
+export default HeaderBar;

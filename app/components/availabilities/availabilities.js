@@ -1,19 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { fetchAvailability } from "../../api/fetchAvailability.js";
+import { processAvailabilitiesData } from "../../utils/processAvailabilitiesData.js";
+import useAuthToken from "../../api/useAuthToken.js";
+import { useDate } from "../../context/dateContext";
 
-export const Availabilities = ({
-  data,
-  priceCategory,
-  isLoading,
-  selectedDate,
-}) => {
+const Availabilities = ({ activityId, priceCategory }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [availabilitiesData, setAvailabilitiesData] = useState(null);
+  const { selectedDate } = useDate();
+  const token = useAuthToken();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,62 +22,53 @@ export const Availabilities = ({
     return () => {
       clearInterval(interval);
     };
-  }, [data]);
+  }, [availabilitiesData]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setError(null);
+      try {
+        if (token) {
+          const data = await fetchAvailability(activityId, token, selectedDate);
+          setAvailabilitiesData(data);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    }
+
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 60000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [selectedDate, activityId, token]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="m-10">Loading...</div>;
   }
 
-  const availabilities = data
-    ?.reduce((acc, d) => {
-      const { categories, startTime, availabilityItemId } = d;
-
-      const startTimeString = startTime;
-      const dateString = `${selectedDate}T${startTimeString}`;
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-        timeZone: "Europe/Zurich",
-      });
-      const formattedTime = formatter.format(new Date(dateString));
-
-      const availabilityDate = new Date(dateString);
-      const currentDate = new Date(selectedDate);
-
-      // Check if the selected date is today's date
-      const isToday =
-        currentDate.getDate() === currentTime.getDate() &&
-        currentDate.getMonth() === currentTime.getMonth() &&
-        currentDate.getFullYear() === currentTime.getFullYear();
-
-      if (
-        !acc.some((item) => item.availabilityItemId === availabilityItemId) &&
-        (!priceCategory || categories[0].name === priceCategory) &&
-        (!isToday || (isToday && availabilityDate > currentTime))
-      ) {
-        acc.push({
-          availabilityItemId,
-          formattedTime,
-          availableSeats: categories[0].availableSeats,
-          name: categories[0].name,
-        });
-      }
-
-      return acc;
-    }, [])
-    .map((item) => (
-      <div
-        key={item.availabilityItemId}
-        className="grid grid-cols-2 gap-4 mb-4 p-4 text-2xl rounded-md shadow border border-gray-200"
-      >
-        {isHydrated && <div>{item.formattedTime}</div>}
-        <div className="text-right">
-          <strong>{item.availableSeats}</strong> seat
-          {item.availableSeats === 1 ? "" : "s"}
-        </div>
+  if (error) {
+    return (
+      <div className="m-10">
+        <p>Error: {error}</p>
+        <button onClick={fetchData}>Retry</button>
       </div>
-    ));
+    );
+  }
+
+  const availabilities = processAvailabilitiesData(
+    availabilitiesData,
+    currentTime,
+    selectedDate,
+    priceCategory
+  );
 
   if (availabilities.length === 0) {
     return (
@@ -93,3 +83,5 @@ export const Availabilities = ({
 
   return availabilities;
 };
+
+export default Availabilities;
