@@ -1,7 +1,7 @@
 import React from "react";
-import { DateProvider } from "../context/dateContext";
-import HeaderBar from "../components/headerBar/headerBar";
-import Availabilities from "../components/availabilities/availabilities";
+import { DateProvider } from "@/context/dateContext";
+import HeaderBar from "@/components/headerBar/headerBar";
+import Availabilities from "@/components/availabilities/availabilities";
 
 export const metadata = {
   title: "Canyon Swing: Grindelwald",
