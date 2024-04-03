@@ -4,15 +4,24 @@ import React, { useState, useEffect } from "react";
 import { fetchAvailability } from "../../api/fetchAvailability.js";
 import { processAvailabilitiesData } from "../../utils/processAvailabilitiesData.js";
 import useAuthToken from "../../api/useAuthToken.js";
-import { useDate } from "../../context/dateContext";
 
-const Availabilities = ({ activityId, priceCategory }) => {
+const Availabilities = ({ activity, date }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availabilitiesData, setAvailabilitiesData] = useState(null);
-  const { selectedDate } = useDate();
   const token = useAuthToken();
+
+  const activityId = {
+    jetboat: "305721",
+    canyonSwingInterlaken: "87",
+    canyonSwingGrindelwald: "87",
+  };
+  const activityPriceCategory = {
+    jetboat: "",
+    canyonSwingInterlaken: "Single Seat with Transport",
+    canyonSwingGrindelwald: "Single Seat - Meeting Point Glacier Canyon",
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,7 +38,11 @@ const Availabilities = ({ activityId, priceCategory }) => {
       setError(null);
       try {
         if (token) {
-          const data = await fetchAvailability(activityId, token, selectedDate);
+          const data = await fetchAvailability(
+            activityId[activity],
+            token,
+            date
+          );
           setAvailabilitiesData(data);
           setIsLoading(false);
         }
@@ -48,7 +61,7 @@ const Availabilities = ({ activityId, priceCategory }) => {
     return () => {
       clearInterval(interval);
     };
-  }, [selectedDate, activityId, token]);
+  }, [date, activityId, token]);
 
   if (isLoading) {
     return <div className="m-10">Loading...</div>;
@@ -66,14 +79,14 @@ const Availabilities = ({ activityId, priceCategory }) => {
   const availabilities = processAvailabilitiesData(
     availabilitiesData,
     currentTime,
-    selectedDate,
-    priceCategory
+    date,
+    activityPriceCategory[activity]
   );
 
   if (availabilities.length === 0) {
     return (
-      <div className="text-lg p-4">
-        <p className="font-bold text-2xl">SOLD OUT</p>
+      <div className="text-lg p-4 border border-neutral-300 rounded-lg">
+        <p className="font-bold text-2xl text-oRed">SOLD OUT</p>
         <p>
           Please ask a member of staff to help you find the next availability.
         </p>

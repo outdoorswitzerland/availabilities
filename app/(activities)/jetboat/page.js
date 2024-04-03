@@ -1,7 +1,4 @@
-import React from "react";
-import { DateProvider } from "@/context/dateContext";
-import HeaderBar from "@/components/headerBar/headerBar";
-import Availabilities from "@/components/availabilities/availabilities";
+import { AvailableDates } from "@/components/availableDates";
 
 export const metadata = {
   title: "Jetboat",
@@ -9,11 +6,8 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <DateProvider>
-      <div className="m-10">
-        <HeaderBar title="JETBOAT departure times" jetboat />
-        <Availabilities activityId="305721" />
-      </div>
-    </DateProvider>
+    <div className="m-10">
+      <AvailableDates activity="jetboat" />
+    </div>
   );
 }

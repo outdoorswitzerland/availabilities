@@ -56,7 +56,7 @@ export function processAvailabilitiesData(
     .map((item) => (
       <div
         key={item.availabilityItemId}
-        className="grid grid-cols-2 gap-4 mb-4 p-4 text-2xl rounded-md shadow border border-gray-200"
+        className="grid grid-cols-2 gap-4 mb-4 p-4 text-2xl rounded-lg border border-neutral-300"
       >
         <div>{item.formattedTime}</div>
         <div className="text-right">
