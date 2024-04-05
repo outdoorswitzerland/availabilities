@@ -9,7 +9,7 @@ const HeaderBar = ({ activity, date }) => {
   const bgColor = activity === "jetboat" ? "bg-oRed" : "bg-primary";
 
   const activityTitle = {
-    jetboat: "JETBOAT",
+    jetboat: "JETBOAT TRIP TIMES",
     canyonSwingInterlaken: "CANYON SWING",
     canyonSwingGrindelwald: "CANYON SWING",
   };
@@ -20,17 +20,19 @@ const HeaderBar = ({ activity, date }) => {
     canyonSwingGrindelwald: "(meet @ the Glacier Canyon)",
   };
 
+  const isJetboat = activity === "jetboat";
+
   return (
     <div
-      className={`grid grid-cols-12 items-center ${bgColor} text-white text-xl rounded-lg p-4 mb-4`}
+      className={`grid grid-cols-12 items-start ${bgColor} text-white text-xl rounded-lg p-6 mb-8`}
     >
-      <div className="col-span-10">
-        <div className="text-3xl font-bold tracking-wider">
+      <div className="col-span-11">
+        <div className={`${isJetboat ? "text-8xl" : "text-3xl"} font-bold`}>
           {activityTitle[activity]}
         </div>
-        <div className="text-lg">{activitySubTitle[activity]}</div>
+        <div className="text-3xl">{activitySubTitle[activity]}</div>
       </div>
-      <div className="col-span-2">
+      <div className="col-span-1">
         <CustomDatePicker setSelectedDate={setSelectedDate} date={date} />
       </div>
     </div>
