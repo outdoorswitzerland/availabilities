@@ -19,6 +19,7 @@ export async function fetchAvailability(activityId, token, selectedDate) {
         Authorization: `Bearer ${token}`,
       },
       signal,
+      cache: "no-store",
     });
 
     if (!res.ok) {

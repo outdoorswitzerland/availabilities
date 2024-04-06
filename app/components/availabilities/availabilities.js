@@ -56,7 +56,7 @@ const Availabilities = ({ activity, date }) => {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 60000);
+    }, 60000); // Update every 1 min
 
     return () => {
       clearInterval(interval);
