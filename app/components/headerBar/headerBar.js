@@ -9,7 +9,7 @@ const HeaderBar = ({ activity, date }) => {
   const bgColor = activity === "jetboat" ? "bg-oRed" : "bg-primary";
 
   const activityTitle = {
-    jetboat: "JETBOAT TRIP TIMES",
+    jetboat: "JETBOAT TRIPS",
     canyonSwingInterlaken: "CANYON SWING",
     canyonSwingGrindelwald: "CANYON SWING",
   };
@@ -30,7 +30,7 @@ const HeaderBar = ({ activity, date }) => {
         <div className={`${isJetboat ? "text-8xl" : "text-3xl"} font-bold`}>
           {activityTitle[activity]}
         </div>
-        <div className="text-3xl">{activitySubTitle[activity]}</div>
+        <div className="text-2xl">{activitySubTitle[activity]}</div>
       </div>
       <div className="col-span-1">
         <CustomDatePicker setSelectedDate={setSelectedDate} date={date} />
