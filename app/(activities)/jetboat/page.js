@@ -1,4 +1,5 @@
 import { AvailableDates } from "@/components/availableDates";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Jetboat",
@@ -7,7 +8,9 @@ export const metadata = {
 export default function Page() {
   return (
     <div className="m-10">
-      <AvailableDates activity="jetboat" />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AvailableDates activity="jetboat" />
+      </Suspense>
     </div>
   );
 }
