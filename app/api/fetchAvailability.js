@@ -20,6 +20,9 @@ export async function fetchAvailability(activityId, token, selectedDate) {
       },
       signal,
       cache: "no-store",
+      next: {
+        revalidate: 60, // Revalidate every minute
+      }
     });
 
     if (!res.ok) {

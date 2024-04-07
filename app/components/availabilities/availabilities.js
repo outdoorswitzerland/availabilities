@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { fetchAvailability } from "../../api/fetchAvailability.js";
 import { processAvailabilitiesData } from "../../utils/processAvailabilitiesData.js";
 import useAuthToken from "../../api/useAuthToken.js";
@@ -23,48 +23,71 @@ const Availabilities = ({ activity, date }) => {
     canyonSwingGrindelwald: "Single Seat - Meeting Point Glacier Canyon",
   };
 
+  // Update the current time every minute
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Update every minute (60,000 milliseconds)
+    }, 60000);
 
     return () => {
       clearInterval(interval);
     };
   }, [availabilitiesData]);
 
-  useEffect(() => {
-    async function fetchData() {
-      setError(null);
-      try {
-        if (token) {
-          const data = await fetchAvailability(
-            activityId[activity],
-            token,
-            date
-          );
-          setAvailabilitiesData(data);
-          setIsLoading(false);
-        }
-      } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
+  // Fetch data
+  const fetchData = useCallback(async () => {
+    console.log("Fetching Data", {
+      activityId: activityId[activity],
+      token,
+      date,
+    }); // TODO REMOVE
+    setError(null);
+    setIsLoading(true);
+    const minLoadingTime = new Promise((resolve) => setTimeout(resolve, 500)); // 500 ms
+
+    try {
+      if (token) {
+        const fetchPromise = fetchAvailability(
+          activityId[activity],
+          token,
+          date
+        );
+        const data = await Promise.all([fetchPromise, minLoadingTime]).then(
+          (values) => values[0]
+        );
+        setAvailabilitiesData(data);
       }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
+  }, [activityId[activity], token, date]);
 
+  // Fetch data on mount and every minute
+  useEffect(() => {
     fetchData();
-
     const interval = setInterval(() => {
       fetchData();
-    }, 60000); // Update every 1 min
+    }, 60000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [date, activityId, token]);
+    return () => clearInterval(interval);
+  }, [fetchData]);
 
   if (isLoading) {
-    return <div className="m-10">Loading...</div>;
+    // return <div className="m-10">Loading...</div>;
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 1 }).map((_, index) => (
+          <div key={index} className="animate-pulse">
+            <div className="flex justify-between gap-4 mb-4 p-4 text-2xl rounded-lg border border-neutral-300">
+              <div className="bg-neutral-200 h-6 w-24 rounded"></div>
+              <div className="bg-neutral-200 h-6 w-24 rounded"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (error) {
