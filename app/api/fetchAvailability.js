@@ -22,14 +22,21 @@ export async function fetchAvailability(activityId, token, selectedDate) {
       cache: "no-store",
       next: {
         revalidate: 60, // Revalidate every minute
-      }
+      },
     });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
 
-    return res.json();
+    const data = await res.json();
+
+    // Ensure data is always an array
+    if (!Array.isArray(data)) {
+      return [data];
+    }
+
+    return data;
   } catch (err) {
     if (err.name === "AbortError") {
       throw new Error("The request took too long. Please try again.");

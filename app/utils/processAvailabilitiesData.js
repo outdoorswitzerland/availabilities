@@ -5,8 +5,14 @@ export function processAvailabilitiesData(
   priceCategory
 ) {
   // Check if data is valid
-  if (!Array.isArray(data)) {
+  if (!data || !Array.isArray(data)) {
     console.error("Invalid data format passed to processAvailabilitiesData");
+    return [];
+  }
+
+  // Handle empty array
+  if (data.length === 0) {
+    // console.log("No availabilities found.");
     return [];
   }
 

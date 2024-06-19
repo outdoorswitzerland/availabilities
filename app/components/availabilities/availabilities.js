@@ -9,7 +9,7 @@ const Availabilities = ({ activity, date }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [availabilitiesData, setAvailabilitiesData] = useState(null);
+  const [availabilitiesData, setAvailabilitiesData] = useState([]);
   const token = useAuthToken();
 
   const activityId = {
@@ -19,8 +19,8 @@ const Availabilities = ({ activity, date }) => {
   };
   const activityPriceCategory = {
     jetboat: "",
-    canyonSwingInterlaken: "Single Seat with Transport",
-    canyonSwingGrindelwald: "Single Seat - Meeting Point Glacier Canyon",
+    canyonSwingInterlaken: "from Interlaken: Single Seat",
+    canyonSwingGrindelwald: "from Grindelwald: Single Seat",
   };
 
   // Update the current time every minute
@@ -36,11 +36,6 @@ const Availabilities = ({ activity, date }) => {
 
   // Fetch data
   const fetchData = useCallback(async () => {
-    console.log("Fetching Data", {
-      activityId: activityId[activity],
-      token,
-      date,
-    }); // TODO REMOVE
     setError(null);
     setIsLoading(true);
     const minLoadingTime = new Promise((resolve) => setTimeout(resolve, 500)); // 500 ms
@@ -55,10 +50,21 @@ const Availabilities = ({ activity, date }) => {
         const data = await Promise.all([fetchPromise, minLoadingTime]).then(
           (values) => values[0]
         );
-        setAvailabilitiesData(data);
+
+        if (Array.isArray(data)) {
+          setAvailabilitiesData(data);
+        } else {
+          console.error("Fetched data is not an array:", data);
+          setError("Fetched data is not in the expected format.");
+          setAvailabilitiesData([]);
+        }
+
+        // setAvailabilitiesData(data);
       }
     } catch (err) {
+      console.error("Error fetching data:", err);
       setError(err.message);
+      setAvailabilitiesData([]); // Ensure it's set to an empty array in case of error
     } finally {
       setIsLoading(false);
     }
@@ -75,7 +81,6 @@ const Availabilities = ({ activity, date }) => {
   }, [fetchData]);
 
   if (isLoading) {
-    // return <div className="m-10">Loading...</div>;
     return (
       <div className="space-y-4">
         {Array.from({ length: 1 }).map((_, index) => (
