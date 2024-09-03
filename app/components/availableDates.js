@@ -42,9 +42,17 @@ export function AvailableDates({ activity }) {
     let dateForDisplay;
 
     if (isToday(date)) {
-      dateForDisplay = "Today | Heute | Aujourd'hui | 今日 | اليوم";
+      dateForDisplay = (
+        <>
+          Today | Heute | <span className="arabicText">اليوم</span>
+        </>
+      );
     } else if (isTomorrow(date)) {
-      dateForDisplay = "Tomorrow | Morgen | Demain | 明日 | غدًا";
+      dateForDisplay = (
+        <>
+          Tomorrow | Morgen | <span className="arabicText">غدًا</span>
+        </>
+      );
     } else {
       dateForDisplay = format(date, "MMMM dd");
     }
@@ -58,7 +66,7 @@ export function AvailableDates({ activity }) {
       <div className="space-y-16">
         {datesToDisplay.map(({ dateForFunction, dateForDisplay }) => (
           <div key={dateForFunction}>
-            <div className="text-2xl mb-4 font-semibold mx-1">
+            <div className="text-3xl mb-4 font-semibold mx-1">
               {dateForDisplay}
             </div>
             <Availabilities activity={activity} date={dateForFunction} />

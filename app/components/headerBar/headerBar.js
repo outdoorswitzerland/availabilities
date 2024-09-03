@@ -14,8 +14,12 @@ const HeaderBar = ({ activity, date }) => {
     canyonSwingGrindelwald: "CANYON SWING",
   };
   const activitySubTitle = {
-    jetboat: `Departure times | Abfahrtszeiten | Horaires de départ | 出発時刻 |
-    أوقات مغادرة`,
+    jetboat: (
+      <>
+        Departure times | Abfahrtszeiten |{" "}
+        <span className="arabicText">أوقات مغادرة</span>
+      </>
+    ),
     canyonSwingInterlaken: "(w/transport from Interlaken)",
     canyonSwingGrindelwald: "(meet @ the Glacier Canyon)",
   };
